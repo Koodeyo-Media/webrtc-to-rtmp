@@ -1,0 +1,32 @@
+{
+  "name": "webrtc-to-rtmp",
+  "version": "1.0.0",
+  "description": "Stream webrtc to rtmp server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "rtmp-server": "node rtmp.js",
+    "proxy": "npm run rtmp-server && npm start"
+  },
+  "keywords": [
+    "webrtc",
+    "rtmp",
+    "rtmps",
+    "media",
+    "media-server"
+  ],
+  "author": "Paul Jeremiah Mugaya",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "internal-ip": "^6.1.0",
+    "medooze-media-server": "^0.94.8",
+    "random-int": "^2.0.1",
+    "semantic-sdp": "^3.21.0",
+    "uuid": "^8.3.1",
+    "ws": "^7.4.1"
+  },
+  "engines": {
+    "node": "15.0.0"
+  }
+}
