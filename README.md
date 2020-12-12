@@ -1,4 +1,4 @@
-# NODE.JS WEBRTC TO RTMP/RTMP
+# NODE.JS WEBRTC TO RTMP/RTMPS
  For more visit https://github.com/bakoushin/medooze-streamer-demo
 
 # RUN 
