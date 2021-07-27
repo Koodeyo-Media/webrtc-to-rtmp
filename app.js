@@ -129,14 +129,14 @@ class WEBRTCRTMP {
             'ffmpeg', [
                 '-protocol_whitelist', 'pipe,rtp,udp',
                 '-i', '-',
-                // '-fflags', '+genpts+igndts+flush_packets+discardcorrupt',
+                '-fflags', '+genpts+igndts+flush_packets+discardcorrupt',
                 '-c:a', 'aac',
                 '-c:v', 'copy',
                 '-frame_drop_threshold', '1.0',
                 '-preset', 'ultrafast',
                 '-f', 'flv', this.rtmpAddress,
-                // '-async', '1',
-                // '-vsync', '2'
+                '-async', '1',
+                '-vsync', '2'
             ]
             .join(' ')
             .split(' ')
@@ -197,6 +197,7 @@ class WEBRTCRTMP {
     }
 
     stop(){
+        console.log(this.ffmpegProcess)
         if(this.ffmpegProcess) {
             this.ffmpegProcess.kill();
             this.ffmpegProcess = null;
@@ -222,14 +223,16 @@ wss.on('connection', function connection(ws, req) {
                 session.stop();
                 sessions.delete(ws.sid)
             }
-            session = new WEBRTCRTMP(ws, msg.rtmpAddress);
-            sessions.set(ws.sid, session);
+            
             if(!/[rtmp|rtmps]:\/\//.test(msg.rtmpAddress)) {
                 return session.sendJson({
                     type: "alert",
                     message: "Invalid rtmp endpoint"
                 });
             }
+
+            session = new WEBRTCRTMP(ws, msg.rtmpAddress);
+            sessions.set(ws.sid, session);
             session.run(msg.sdp); 
         } else if(msg.push) {
             let session = sessions.get(ws.sid);
