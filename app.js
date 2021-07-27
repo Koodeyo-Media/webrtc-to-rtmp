@@ -129,14 +129,14 @@ class WEBRTCRTMP {
             'ffmpeg', [
                 '-protocol_whitelist', 'pipe,rtp,udp',
                 '-i', '-',
-                '-fflags', '+genpts+igndts+flush_packets+discardcorrupt',
+                // '-fflags', '+genpts+igndts+flush_packets+discardcorrupt',
                 '-c:a', 'aac',
-                '-c:v', 'libx264',
+                '-c:v', 'copy',
                 '-frame_drop_threshold', '1.0',
                 '-preset', 'ultrafast',
                 '-f', 'flv', this.rtmpAddress,
-                '-async', '1',
-                '-vsync', '2'
+                // '-async', '1',
+                // '-vsync', '2'
             ]
             .join(' ')
             .split(' ')
@@ -198,10 +198,11 @@ class WEBRTCRTMP {
 
     stop(){
         if(this.ffmpegProcess) {
-            this.ffmpegProcess.kill('SIGINT');
+            this.ffmpegProcess.kill();
             this.ffmpegProcess = null;
             console.log('FFMpeg stopped');
         }
+
         this.sendJson({
             type: "alert",
             message: "Stopped"
@@ -213,6 +214,8 @@ wss.on('connection', function connection(ws, req) {
     ws.sid = uuid.v4();
     ws.on('message', function(message) {
         let msg = JSON.parse(message);
+        console.log("message", msg);
+
         if(msg.start) {
             let session = sessions.get(ws.sid);
             if(session) {
@@ -221,7 +224,7 @@ wss.on('connection', function connection(ws, req) {
             }
             session = new WEBRTCRTMP(ws, msg.rtmpAddress);
             sessions.set(ws.sid, session);
-            if(/[rtmp|rtmps]:\/\//.test(msg.rtmpAddress)) {
+            if(!/[rtmp|rtmps]:\/\//.test(msg.rtmpAddress)) {
                 return session.sendJson({
                     type: "alert",
                     message: "Invalid rtmp endpoint"

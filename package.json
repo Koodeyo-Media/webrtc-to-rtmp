@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "rtmp-server": "node rtmp.js",
-    "proxy": "npm run rtmp-server && npm start"
+    "rtmp": "node rtmp.js"
   },
   "keywords": [
     "webrtc",
@@ -17,16 +16,17 @@
   ],
   "author": "Paul Jeremiah Mugaya",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "internal-ip": "^6.1.0",
-    "medooze-media-server": "^0.94.8",
-    "random-int": "^2.0.1",
-    "semantic-sdp": "^3.21.0",
-    "uuid": "^8.3.1",
-    "ws": "^7.4.1"
-  },
   "engines": {
     "node": "15.0.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "internal-ip": "^6.2.0",
+    "medooze-media-server": "^0.107.0",
+    "node-media-server": "^2.3.8",
+    "random-int": "^2.0.1",
+    "semantic-sdp": "^3.19.7",
+    "uuid": "^8.3.2",
+    "ws": "^7.5.3"
   }
 }
