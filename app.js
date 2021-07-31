@@ -126,10 +126,10 @@ class WEBRTCRTMP {
     } 
 
     push() {
-        let session = new TransSession({
+        let session = this.session = new TransSession({
             ffmpeg: ffmpegPath,
             mediaRoot: path.resolve(__dirname, 'public'),
-            vc: "copy",
+            vc: "libx264",
             vcParam: [],
             ac: "aac",
             acParam: ['-ab', '64k', '-ac', '1', '-ar', '44100'],
@@ -137,9 +137,9 @@ class WEBRTCRTMP {
             rtmpAddress: this.rtmpAddress,
             streamApp: 'live',
             streamName: 'STREAM_NAME',
-            mp4: false,
+            mp4: true,
             mp4Flags: '[movflags=frag_keyframe+empty_moov]',
-            hls: false,
+            hls: true,
             hlsFlags: '[hls_time=2:hls_list_size=3:hls_flags=delete_segments]',
             dash: true,
             dashFlags: '[f=dash:window_size=3:extra_window_size=5]'
@@ -237,7 +237,10 @@ class WEBRTCRTMP {
     }
 
     stop(){
-        console.log(this.ffmpegProcess)
+        if(this.session) {
+            this.session.end()
+        }
+
         if(this.ffmpegProcess) {
             this.ffmpegProcess.kill();
             this.ffmpegProcess = null;
@@ -280,6 +283,7 @@ wss.on('connection', function connection(ws, req) {
         } else if(msg.stop) {
             let session = sessions.get(ws.sid);
             session.stop();
+            session.delete(ws.sid)
         }
     });
 

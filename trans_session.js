@@ -24,7 +24,7 @@ class TransSession extends EventEmitter {
 
     if (this.conf.mp4) {
       this.conf.mp4Flags = this.conf.mp4Flags ? this.conf.mp4Flags : '';
-      let mp4FileName = dateFormat('yyyy-mm-dd-HH-MM-ss') + '.mp4';
+      let mp4FileName = dateFormat('yyyy-mm-dd') + '.mp4';
       let mapMp4 = `${this.conf.mp4Flags}${ouPath}/${mp4FileName}|`;
       mapStr += mapMp4;
       console.log('[Transmuxing MP4] ' + ouPath + '/' + mp4FileName);
@@ -51,17 +51,8 @@ class TransSession extends EventEmitter {
     let argv = [
         '-protocol_whitelist', 'pipe,rtp,udp',
         '-i', '-',
-        '-fflags', '+genpts+igndts+flush_packets+discardcorrupt',
-        '-frame_drop_threshold', '1.0',
-        '-async', '1',
-        '-vsync', '2'
+        // "-reorder_queue_size", "0"
     ];
-
-    if(!this.conf.mp4) {
-        Array.prototype.push.apply(argv, [
-            // '-preset', 'ultrafast'
-        ]);
-    }
 
     Array.prototype.push.apply(argv, ['-c:v', vc]);
     Array.prototype.push.apply(argv, this.conf.vcParam);
