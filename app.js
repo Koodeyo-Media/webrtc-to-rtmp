@@ -12,6 +12,10 @@ const wss = new WebSocket.Server({ server });
 const uuid = require('uuid');
 const port = process.env.PORT || 3000;
 const sessions = new Map();
+const TransSession = require('./trans_session');
+const path = require('path');
+const ffmpegPath = require("ffmpeg-static");
+
 // Init MediaServer
 const ip = process.env.IP_ADDRESS || internalIp.v4.sync();
 const endpoint = MediaServer.createEndpoint(ip);
@@ -122,9 +126,45 @@ class WEBRTCRTMP {
     } 
 
     push() {
-        // Spawn FFMpeg process which will listen to RTP stream from MediaServer.
-        // FFMpeg is set up to mux H264 video stream with AAC audio stream into a single MP4 file.
-        // Since WebRTC normally uses Opus as audio codec, it will be transcoded into AAC by FFMpeg.
+        let session = new TransSession({
+            ffmpeg: ffmpegPath,
+            mediaRoot: path.resolve(__dirname, 'public'),
+            vc: "copy",
+            vcParam: [],
+            ac: "aac",
+            acParam: ['-ab', '64k', '-ac', '1', '-ar', '44100'],
+            rtmp: false,
+            rtmpAddress: this.rtmpAddress,
+            streamApp: 'live',
+            streamName: 'STREAM_NAME',
+            mp4: false,
+            mp4Flags: '[movflags=frag_keyframe+empty_moov]',
+            hls: false,
+            hlsFlags: '[hls_time=2:hls_list_size=3:hls_flags=delete_segments]',
+            dash: true,
+            dashFlags: '[f=dash:window_size=3:extra_window_size=5]'
+        });
+
+        session.on('ffmpeg:start', () => {
+            console.log(`ffmpeg push started for session`);
+            this.startStreamer();
+        });
+
+        session.on('ffmpeg:exit', (code, signal) => {
+            console.log(`FFMpeg stopped with exit code ${code} (${signal})`);
+            // Stop streamer
+            this.streamerSessionVideo.stop();
+            this.streamerSessionAudio.stop();
+            this.streamer.stop();
+            this.streamer = null;
+            console.log('Streamer stopped');
+        });
+
+        session.run(this.sdp);
+    }
+
+    push2() {
+        
         this.ffmpegProcess = spawn(
             'ffmpeg', [
                 '-protocol_whitelist', 'pipe,rtp,udp',

@@ -4,8 +4,7 @@
   "description": "Stream webrtc to rtmp server",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "rtmp": "node rtmp.js"
+    "start": "node app.js"
   },
   "keywords": [
     "webrtc",
@@ -20,9 +19,12 @@
     "node": "15.0.0"
   },
   "dependencies": {
+    "dateformat": "^4.5.1",
     "express": "^4.17.1",
+    "ffmpeg-static": "^4.4.0",
     "internal-ip": "^6.2.0",
     "medooze-media-server": "^0.107.0",
+    "mkdirp": "^1.0.4",
     "node-media-server": "^2.3.8",
     "random-int": "^2.0.1",
     "semantic-sdp": "^3.19.7",
