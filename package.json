@@ -16,7 +16,7 @@
   "author": "Paul Jeremiah Mugaya",
   "license": "ISC",
   "engines": {
-    "node": "14.17.0"
+    "node": "15.0.0"
   },
   "dependencies": {
     "dateformat": "^4.5.1",
