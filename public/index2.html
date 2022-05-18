@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>WEBRTC TO RTMP</title>
+  </head>
+  <body>
+    <span id="status"></span>
+    <div><video width="854" height="480" id="video-loopback" autoplay muted playsinline></video></div>
+    <input type="text" id="rtmpAddress" value="rtmp://127.0.0.1/live/STREAM_NAME" placeholder="rtmp://127.0.0.1/live/STREAM_NAME">
+    <div>
+      <button id="startBtn">Go Live</button>
+      <button id="stopBtn">Stop</button>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

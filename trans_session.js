@@ -51,7 +51,7 @@ class TransSession extends EventEmitter {
     let argv = [
         '-protocol_whitelist', 'pipe,rtp,udp',
         '-i', '-',
-        // "-reorder_queue_size", "0"
+        "-reorder_queue_size", "0"
     ];
 
     Array.prototype.push.apply(argv, ['-c:v', vc]);

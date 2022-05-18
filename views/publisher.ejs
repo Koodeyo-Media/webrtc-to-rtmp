@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webrtc Publisher</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">
+        <div class="header__back">
+          <i class="fas fa-angle-left"></i>
+        </div>
+        <h3>Webrtc Publisher</h2>
+      </div>
+    </div>  
+    <div class="main">  
+    <div class="main__left">
+      <div class="videos__group">
+        <div id="video-grid">
+          <video id="video-loopback" autoplay muted playsinline></video>
+        </div>
+      </div>
+      <div class="options">
+        <div class="options__left">
+          <div id="stopVideo" class="options__button">
+            <i class="fa fa-video-camera"></i>
+          </div>
+          <div id="muteButton" class="options__button">
+            <i class="fa fa-microphone"></i>
+          </div>
+          <div id="moreOptions" class="options__button">
+            <i class="fa fa-sliders"></i>
+          </div>
+        </div>
+        <div class="options__right">
+          <div id="goLive" class="go_live__button">
+            <i class="fa fa-live"></i>
+            GO Live
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main__right">
+      <div class="more_options_window">
+          <div class="more_options">
+            <p>      
+              <label class="w3-text-blue"><b>RTMP Address</b></label>
+              <input class="w3-input w3-border" id="rtmpAddress" type="text"></p>
+            <p>      
+          </div>
+      </div>
+    </div>
+  </div>
+  </body>
+  <script src="script.js"></script>
+</html>
